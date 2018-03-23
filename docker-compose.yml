@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  db:
+    image: "microsoft/mssql-server-linux"
+    environment:
+        SA_PASSWORD: "<YourStrong!Passw0rd>"
+        ACCEPT_EULA: "Y"
+    ports:
+      - "1401:1433"
+    volumes:
+      - mssqldata:/var/opt/mssql
+    networks:
+      - derin-network
+
+  core_api_test:
+    image: coreapitest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "32770:80"
+    build:
+      context: .
+      dockerfile: core_api_test/Dockerfile
+    depends_on:
+      - db
+    networks:
+      - derin-network
+volumes:
+  mssqldata:
+networks:
+  derin-network:
+    driver: bridge
