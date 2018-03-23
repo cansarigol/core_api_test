@@ -2,8 +2,6 @@ FROM microsoft/aspnetcore:2.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-ENTRYPOINT ["dotnet", "ef",  "database", "update"]
-
 FROM microsoft/aspnetcore-build:2.0 AS build
 WORKDIR /src
 COPY core_api_test.sln ./
